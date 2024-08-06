@@ -4,6 +4,7 @@ import './Chatbot.css';
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMinimized, setIsMinimized] = useState(false);
   const chatMessagesRef = useRef(null);
 
   const sendMessage = async () => {
@@ -48,26 +49,46 @@ const ChatBot = () => {
     }
   }, [messages]);
 
+  const toggleMinimize = () => {
+    setIsMinimized(!isMinimized);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
   return (
-    <div className="chatbot-container">
-      <div className="chat-header">Chatbot Web App</div>
-      <div className="chat-messages" id="chatMessages" ref={chatMessagesRef}>
-        {messages.map((msg, index) => (
-          <div key={index} className={`chat-message ${msg.sender}`}>
-            <div className="chat-message-content" dangerouslySetInnerHTML={{ __html: msg.message }}></div>
+    <div className={`chatbot-container ${isMinimized ? 'minimized' : ''}`}>
+      <div className="chat-header">
+        Chatbot Web App
+        <button className="minimize-button" onClick={toggleMinimize}>
+          {isMinimized ? '▲' : '▼'}
+        </button>
+      </div>
+      {!isMinimized && (
+        <>
+          <div className="chat-messages" id="chatMessages" ref={chatMessagesRef}>
+            {messages.map((msg, index) => (
+              <div key={index} className={`chat-message ${msg.sender}`}>
+                <div className="chat-message-content" dangerouslySetInnerHTML={{ __html: msg.message }}></div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="chat-input">
-        <input 
-          type="text" 
-          id="search_query" 
-          placeholder="Type your message here..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button id="sendButton" onClick={sendMessage}>Send</button>
-      </div>
+          <div className="chat-input">
+            <input 
+              type="text" 
+              id="search_query" 
+              placeholder="Type your message here..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button id="sendButton" onClick={sendMessage}>Send</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
