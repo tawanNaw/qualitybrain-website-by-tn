@@ -12,16 +12,32 @@
     display: flex;
     flex-direction: column;
     font-family: 'Arial', sans-serif;
+    transition: height 0.3s ease;
+  }
+  
+  .chatbot-container.minimized {
+    height: 40px;
   }
   
   .chat-header {
     background-color: #0066cc;
     color: white;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
     font-weight: bold;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .minimize-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
   }
   
   .chat-messages {
@@ -92,4 +108,4 @@
     height: auto;
     border-radius: 5px;
   }
-      
+  
